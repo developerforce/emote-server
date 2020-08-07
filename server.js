@@ -65,7 +65,7 @@ function heartbeat (id) {
 }
 
 async function start () {
-  const address = await server.listen(port)
+  const address = await server.listen(port, '0.0.0.0')
 
   await sub.subscribe('feedback')
   sub.on('message', (channel, message) => {
