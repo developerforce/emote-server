@@ -1,0 +1,26 @@
+{
+  "name": "feedback-server",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "standard --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "event-iterator": "^2.0.0",
+    "fastify": "^3.2.0",
+    "fastify-sse-v2": "^2.0.2",
+    "fastify-static": "^3.2.0",
+    "ioredis": "^4.17.3",
+    "pino-pretty": "^4.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "standard": "^14.3.4"
+  }
+}

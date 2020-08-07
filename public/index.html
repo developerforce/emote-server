@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testing SSE</title>
+</head>
+<body>
+  <h1>Hello, getting your feedback here!</h1>
+  <ul></ul>
+</body>
+<script>
+  const eventSource = new EventSource('/events/feedback/mytalk')
+  const eventList = document.querySelector('ul')
+
+  eventSource.addEventListener('feedback', function (event) {
+    const newElement = document.createElement('li')
+    console.log(event)
+    newElement.textContent = 'message: ' + event.data
+    eventList.appendChild(newElement)
+  })
+</script>
+</html>
