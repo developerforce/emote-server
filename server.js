@@ -5,13 +5,19 @@ const path = require('path')
 const Redis = require('ioredis')
 const fastify = require('fastify')
 const fastifyStatic = require('fastify-static')
+const fastifyRateLimit = require('fastify-rate-limit')
 const { FastifySSEPlugin } = require('fastify-sse-v2')
 const { EventEmitter } = require('events')
 const { EventIterator } = require('event-iterator')
-const port = process.env.PORT || 8080
 
-const pub = new Redis(process.env.REDIS_URL)
-const sub = new Redis(process.env.REDIS_URL)
+const PORT = process.env.PORT || 8080
+const REDIS_URL = process.env.REDIS_URL
+const RATE_LIMIT_MAX = process.env.RATE_LIMIT_MAX || 100
+const RATE_LIMIT_WINDOW = process.env.RATE_LIMIT_WINDOW || '1 minute'
+
+const cache = new Redis(REDIS_URL)
+const pub = new Redis(REDIS_URL)
+const sub = new Redis(REDIS_URL)
 const events = new EventEmitter()
 
 const server = fastify({
@@ -19,12 +25,16 @@ const server = fastify({
     prettyPrint: true
   }
 })
-
+server.register(fastifyRateLimit, {
+  global: false,
+  redis: cache
+})
 server.register(fastifyStatic, {
   root: path.join(__dirname, 'public')
 })
 server.register(FastifySSEPlugin)
 
+// Register to an Event by id
 server.get('/events/feedback/:id', (request, reply) => {
   const id = request.params.id
   const eventIterator = new EventIterator(({ push }) => {
@@ -42,7 +52,16 @@ server.get('/events/feedback/:id', (request, reply) => {
   reply.sse(eventIterator)
 })
 
-server.post('/api/feedback/:id', (request, reply) => {
+// Send a feedback event by id
+// body: {"feedback": "keyword"}
+server.post('/api/feedback/:id', {
+  config: {
+    rateLimit: {
+      max: RATE_LIMIT_MAX,
+      timeWindow: RATE_LIMIT_WINDOW
+    }
+  }
+}, (request, reply) => {
   const id = request.params.id
   const feedback = request.body.feedback
   const message = {
@@ -65,7 +84,7 @@ function heartbeat (id) {
 }
 
 async function start () {
-  const address = await server.listen(port, '0.0.0.0')
+  const address = await server.listen(PORT, '0.0.0.0')
 
   await sub.subscribe('feedback')
   sub.on('message', (channel, message) => {
