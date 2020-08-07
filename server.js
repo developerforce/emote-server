@@ -21,6 +21,7 @@ const sub = new Redis(REDIS_URL)
 const events = new EventEmitter()
 
 const server = fastify({
+  trustProxy: true,
   logger: {
     prettyPrint: true
   }
