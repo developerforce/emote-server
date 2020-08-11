@@ -16,7 +16,7 @@
   eventSource.addEventListener('feedback', function (event) {
     const newElement = document.createElement('li')
     console.log(event)
-    newElement.textContent = 'message: ' + event.data
+    newElement.textContent = 'message: ' + JSON.stringify(event.data)
     eventList.appendChild(newElement)
   })
 </script>

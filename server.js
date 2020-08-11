@@ -43,14 +43,28 @@ server.get('/events/feedback/:id', (request, reply) => {
     const hb = heartbeat(id)
     events.on(`feedback:${id}`, push)
     events.on(`heartbeat:${id}`, push)
+    events.on(`votes:${id}`, push)
     return () => {
       server.log.info(`Cleaning up timers and events for id: ${id}`)
       events.removeEventListener(`feedback:${id}`)
       events.removeEventListener(`heartbeat:${id}`)
+      events.removeEventListener(`votes:${id}`)
       clearInterval(hb)
     }
   })
   reply.sse(eventIterator)
+})
+
+// Get the current state by id
+server.get('/api/feedback/:id', async (request, reply) => {
+  const id = request.params.id
+  let votes = {}
+  try {
+    votes = await getVotes(id)
+  } catch (err) {
+    server.log.error(err)
+  }
+  reply.send(votes)
 })
 
 // Send a feedback event by id
@@ -62,9 +76,14 @@ server.post('/api/feedback/:id', {
       timeWindow: RATE_LIMIT_WINDOW
     }
   }
-}, (request, reply) => {
+}, async (request, reply) => {
   const id = request.params.id
   const feedback = request.body.feedback
+  try {
+    await vote(id, feedback)
+  } catch (err) {
+    server.log.error(err)
+  }
   const message = {
     event: `feedback:${id}`,
     data: {
@@ -79,9 +98,19 @@ server.post('/api/feedback/:id', {
 
 function heartbeat (id) {
   server.log.info(`Starting heartbeat for id: ${id}`)
-  return setInterval(() => {
+  return setInterval(async () => {
+    const votes = await getVotes(id)
     events.emit(`heartbeat:${id}`, { id, event: 'heartbeat', data: 'ping' })
+    events.emit(`votes:${id}`, { id, event: 'votes', data: JSON.stringify(votes) })
   }, 30 * 1000)
+}
+
+function getVotes (id) {
+  return cache.hgetall(id)
+}
+
+function vote (id, result) {
+  return cache.hincrby(id, result, 1)
 }
 
 async function start () {
