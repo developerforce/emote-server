@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 8080
 const REDIS_URL = process.env.REDIS_URL
 const RATE_LIMIT_MAX = process.env.RATE_LIMIT_MAX || 100
 const RATE_LIMIT_WINDOW = process.env.RATE_LIMIT_WINDOW || '1 minute'
+const HEARTBEAT_TIMEOUT = process.env.HEARTBEAT_TIMEOUT || 30
 
 const cache = new Redis(REDIS_URL)
 const pub = new Redis(REDIS_URL)
@@ -36,17 +37,17 @@ server.register(fastifyStatic, {
 server.register(FastifySSEPlugin)
 
 // Register to an Event by id
-server.get('/events/feedback/:id', (request, reply) => {
+server.get('/events/emote/:id', (request, reply) => {
   const id = request.params.id
   const eventIterator = new EventIterator(({ push }) => {
-    server.log.info(`Listening for feedback events, id: ${id}`)
+    server.log.info(`Listening for emote events, id: ${id}`)
     const hb = heartbeat(id)
-    events.on(`feedback:${id}`, push)
+    events.on(`emote:${id}`, push)
     events.on(`heartbeat:${id}`, push)
     events.on(`votes:${id}`, push)
     return () => {
       server.log.info(`Cleaning up timers and events for id: ${id}`)
-      events.removeEventListener(`feedback:${id}`)
+      events.removeEventListener(`emote:${id}`)
       events.removeEventListener(`heartbeat:${id}`)
       events.removeEventListener(`votes:${id}`)
       clearInterval(hb)
@@ -56,7 +57,7 @@ server.get('/events/feedback/:id', (request, reply) => {
 })
 
 // Get the current state by id
-server.get('/api/feedback/:id', async (request, reply) => {
+server.get('/api/emote/:id', async (request, reply) => {
   const id = request.params.id
   let votes = {}
   try {
@@ -67,9 +68,9 @@ server.get('/api/feedback/:id', async (request, reply) => {
   reply.send(votes)
 })
 
-// Send a feedback event by id
-// body: {"feedback": "keyword"}
-server.post('/api/feedback/:id', {
+// Send a emote event by id
+// body: {"emote": "keyword"}
+server.post('/api/emote/:id', {
   config: {
     rateLimit: {
       max: RATE_LIMIT_MAX,
@@ -78,47 +79,76 @@ server.post('/api/feedback/:id', {
   }
 }, async (request, reply) => {
   const id = request.params.id
-  const feedback = request.body.feedback
+  const emote = request.body.emote
   try {
-    await vote(id, feedback)
+    await vote(id, emote)
   } catch (err) {
     server.log.error(err)
   }
   const message = {
-    event: `feedback:${id}`,
+    event: `emote:${id}`,
     data: {
       id,
-      event: 'feedback',
-      data: feedback
+      event: 'emote',
+      data: emote
     }
   }
-  pub.publish('feedback', JSON.stringify(message))
-  reply.send({ message: 'feedback received' })
+  pub.publish('emote', JSON.stringify(message))
+  reply.send({ message: 'emote received' })
 })
 
+/**
+ * Start a heatbeat function and report votes by event
+ *
+ * @param {String} id - Event ID
+ */
 function heartbeat (id) {
-  server.log.info(`Starting heartbeat for id: ${id}`)
+  server.log.info(`Starting heartbeat for event id: ${id}`)
   return setInterval(async () => {
     const votes = await getVotes(id)
-    events.emit(`heartbeat:${id}`, { id, event: 'heartbeat', data: 'ping' })
-    events.emit(`votes:${id}`, { id, event: 'votes', data: JSON.stringify(votes) })
-  }, 30 * 1000)
+    events.emit(`heartbeat:${id}`, {
+      id,
+      event: 'heartbeat',
+      data: 'ping'
+    })
+    events.emit(`votes:${id}`, {
+      id,
+      event: 'votes',
+      data: JSON.stringify(votes)
+    })
+  }, HEARTBEAT_TIMEOUT * 1000)
 }
 
+/**
+ * Get Votes by Event ID
+ *
+ * @param {String} id - Event ID
+ * @returns {Promise<any>} Object with emotes and votes
+ */
 function getVotes (id) {
   return cache.hgetall(id)
 }
 
-function vote (id, result) {
-  return cache.hincrby(id, result, 1)
+/**
+ * Vote on an emote by Event ID
+ *
+ * @param {String} id - EventID
+ * @param {String} emote - Emote code
+ * @returns {Promise<any>}
+ */
+function vote (id, emote) {
+  return cache.hincrby(id, emote, 1)
 }
 
+/**
+ * Start Server
+ */
 async function start () {
   const address = await server.listen(PORT, '0.0.0.0')
 
-  await sub.subscribe('feedback')
+  await sub.subscribe('emote')
   sub.on('message', (channel, message) => {
-    if (channel === 'feedback') {
+    if (channel === 'emote') {
       try {
         const { event, data } = JSON.parse(message)
         events.emit(event, data)
