@@ -10,14 +10,18 @@
   <ul></ul>
 </body>
 <script>
-  const eventSource = new EventSource('/events/feedback/mytalk')
+  const eventSource = new EventSource('/events/emote/mytalk')
   const eventList = document.querySelector('ul')
 
-  eventSource.addEventListener('feedback', function (event) {
+  eventSource.addEventListener('emote', function (event) {
     const newElement = document.createElement('li')
     console.log(event)
     newElement.textContent = 'message: ' + JSON.stringify(event.data)
     eventList.appendChild(newElement)
+  })
+
+  eventSource.addEventListener('votes', function (votes) {
+    console.log(votes)
   })
 </script>
 </html>
