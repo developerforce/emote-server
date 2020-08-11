@@ -115,6 +115,6 @@ Connect to an event stream by Event ID
 
 #### Events
 
-* `emote` - An `emote` has been received
-* `votes` - A `votes` state object has been received
-* `heartbeat` - A `ping` has been received
+* `emote` - An `emote` has been received - (data: `smile`)
+* `votes` - A `votes` state object has been received (data: `{"smile": 1, "question": 3}`)
+* `heartbeat` - A `ping` has been received (data: `ping`)
