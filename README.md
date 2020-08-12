@@ -40,6 +40,8 @@ npm run start:dev
 * `RATE_LIMIT_MAX` - Max number of requests per Window (Default: 100)
 * `RATE_LIMIT_WINDOW` - Duration of the Rate Limit Window (Default: 1 minute)
 * `HEARTBEAT_TIMEOUT` - Duration of the Heartbeat (Default: 30 seconds)
+* `EVENT_ID_LENGTH` - Max length of an Event ID (Default: 32 characters)
+* `EVENTS_MAX` - Max numbers of Event Streams (Default: 32)
 
 ## API
 

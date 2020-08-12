@@ -19,7 +19,9 @@ const {
   RATE_LIMIT_MAX,
   RATE_LIMIT_WINDOW,
   HEARTBEAT_TIMEOUT,
-  EMOTE_ALLOWLIST
+  EMOTE_ALLOWLIST,
+  EVENT_ID_LENGTH,
+  EVENTS_MAX
 } = require('./config')
 
 /**
@@ -54,7 +56,10 @@ server.register(FastifySSEPlugin)
 const paramsSchema = {
   type: 'object',
   properties: {
-    id: { type: 'string', maxLength: 32 }
+    id: {
+      type: 'string',
+      maxLength: EVENT_ID_LENGTH
+    }
   }
 }
 
@@ -134,11 +139,17 @@ server.post('/api/emote/:id', {
 }, async (request, reply) => {
   const id = request.params.id
   const emote = request.body.emote
+
   try {
+    await saveEvent(id)
     await vote(id, emote)
   } catch (err) {
     server.log.error(err)
+    reply.statusCode = 400
+    reply.send({ error: `Can't submit vote: ${err.message}` })
+    return
   }
+
   const message = {
     event: `emote:${id}`,
     data: {
@@ -171,6 +182,22 @@ function heartbeat (id) {
       data: JSON.stringify(votes)
     })
   }, HEARTBEAT_TIMEOUT * 1000)
+}
+
+/**
+ * Save an Event in Redis
+ *
+ * @param {String} id - Event ID
+ * @returns {Promise<any>}
+ */
+async function saveEvent (id) {
+  const total = await cache.scard('events')
+
+  if (total >= EVENTS_MAX) {
+    return Promise.reject(new Error('Max Events Reached'))
+  }
+
+  return cache.sadd('events', id)
 }
 
 /**
