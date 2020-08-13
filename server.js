@@ -7,6 +7,7 @@ const fastify = require('fastify')
 const fastifyStatic = require('fastify-static')
 const fastifyRateLimit = require('fastify-rate-limit')
 const { FastifySSEPlugin } = require('fastify-sse-v2')
+const fastifyCors = require('fastify-cors')
 const { EventEmitter } = require('events')
 const { EventIterator } = require('event-iterator')
 
@@ -35,9 +36,14 @@ server.register(fastifyStatic, {
   root: path.join(__dirname, 'public')
 })
 server.register(FastifySSEPlugin)
+server.register(fastifyCors)
 
 // Register to an Event by id
 server.get('/events/emote/:id', (request, reply) => {
+  // fastify-cors doesn't seem to work with fastify-sse-v2
+  // so we need to add this header to this route manually
+  reply.raw.setHeader('Access-Control-Allow-Origin', '*')
+
   const id = request.params.id
   const eventIterator = new EventIterator(({ push }) => {
     server.log.info(`Listening for emote events, id: ${id}`)
