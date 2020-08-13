@@ -11,17 +11,31 @@ const fastifyCors = require('fastify-cors')
 const { EventEmitter } = require('events')
 const { EventIterator } = require('event-iterator')
 
-const PORT = process.env.PORT || 8080
-const REDIS_URL = process.env.REDIS_URL
-const RATE_LIMIT_MAX = process.env.RATE_LIMIT_MAX || 100
-const RATE_LIMIT_WINDOW = process.env.RATE_LIMIT_WINDOW || '1 minute'
-const HEARTBEAT_TIMEOUT = process.env.HEARTBEAT_TIMEOUT || 30
+/**
+ * Configuration Options
+ */
+const {
+  PORT,
+  REDIS_URL,
+  RATE_LIMIT_MAX,
+  RATE_LIMIT_WINDOW,
+  HEARTBEAT_TIMEOUT,
+  EMOTE_ALLOWLIST,
+  EVENT_ID_LENGTH,
+  EVENTS_MAX
+} = require('./config')
 
+/**
+ * Initialize Redis and Event Handlers
+ */
 const cache = new Redis(REDIS_URL)
 const pub = new Redis(REDIS_URL)
 const sub = new Redis(REDIS_URL)
 const events = new EventEmitter()
 
+/**
+ * Create Server and Register Plugins
+ */
 const server = fastify({
   trustProxy: true,
   logger: {
@@ -38,8 +52,42 @@ server.register(fastifyStatic, {
 server.register(FastifySSEPlugin)
 server.register(fastifyCors)
 
-// Register to an Event by id
-server.get('/events/emote/:id', (request, reply) => {
+/**
+ * Validation Schemas
+ */
+const paramsSchema = {
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string',
+      maxLength: EVENT_ID_LENGTH
+    }
+  }
+}
+
+const bodySchema = {
+  type: 'object',
+  required: ['emote'],
+  properties: {
+    emote: {
+      type: 'string',
+      enum: EMOTE_ALLOWLIST
+    }
+  }
+}
+
+/**
+ * API Routes
+ */
+
+/**
+ * Register to an Event Stream by Event ID
+ */
+server.get('/events/emote/:id', {
+  schema: {
+    params: paramsSchema
+  }
+}, (request, reply) => {
   // fastify-cors doesn't seem to work with fastify-sse-v2
   // so we need to add this header to this route manually
   reply.raw.setHeader('Access-Control-Allow-Origin', '*')
@@ -52,7 +100,7 @@ server.get('/events/emote/:id', (request, reply) => {
     events.on(`heartbeat:${id}`, push)
     events.on(`votes:${id}`, push)
     return () => {
-      server.log.info(`Cleaning up timers and events for id: ${id}`)
+      server.log.info(`Cleaning up timers and events for Event ID: ${id}`)
       events.removeEventListener(`emote:${id}`)
       events.removeEventListener(`heartbeat:${id}`)
       events.removeEventListener(`votes:${id}`)
@@ -62,8 +110,14 @@ server.get('/events/emote/:id', (request, reply) => {
   reply.sse(eventIterator)
 })
 
-// Get the current state by id
-server.get('/api/emote/:id', async (request, reply) => {
+/**
+ * Get the current votes by Event ID
+ */
+server.get('/api/emote/:id', {
+  schema: {
+    params: paramsSchema
+  }
+}, async (request, reply) => {
   const id = request.params.id
   let votes = {}
   try {
@@ -74,23 +128,34 @@ server.get('/api/emote/:id', async (request, reply) => {
   reply.send(votes)
 })
 
-// Send a emote event by id
-// body: {"emote": "keyword"}
+/**
+ * Send a emote by Event ID
+ */
 server.post('/api/emote/:id', {
   config: {
     rateLimit: {
       max: RATE_LIMIT_MAX,
       timeWindow: RATE_LIMIT_WINDOW
     }
+  },
+  schema: {
+    body: bodySchema,
+    params: paramsSchema
   }
 }, async (request, reply) => {
   const id = request.params.id
   const emote = request.body.emote
+
   try {
+    await saveEvent(id)
     await vote(id, emote)
   } catch (err) {
     server.log.error(err)
+    reply.statusCode = 400
+    reply.send({ error: `Can't submit vote: ${err.message}` })
+    return
   }
+
   const message = {
     event: `emote:${id}`,
     data: {
@@ -123,6 +188,22 @@ function heartbeat (id) {
       data: JSON.stringify(votes)
     })
   }, HEARTBEAT_TIMEOUT * 1000)
+}
+
+/**
+ * Save an Event in Redis
+ *
+ * @param {String} id - Event ID
+ * @returns {Promise<any>}
+ */
+async function saveEvent (id) {
+  const total = await cache.scard('events')
+
+  if (total >= EVENTS_MAX) {
+    return Promise.reject(new Error('Max Events Reached'))
+  }
+
+  return cache.sadd('events', id)
 }
 
 /**
