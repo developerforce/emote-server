@@ -93,22 +93,33 @@ server.get('/events/emote/:id', {
   reply.raw.setHeader('Access-Control-Allow-Origin', '*')
 
   const id = request.params.id
+
   const eventIterator = new EventIterator(({ push }) => {
     server.log.info(`Listening for emote events, id: ${id}`)
     const hb = heartbeat(id)
     events.on(`emote:${id}`, push)
     events.on(`heartbeat:${id}`, push)
     events.on(`votes:${id}`, push)
-    return () => {
-      server.log.info(`Cleaning up timers and events for Event ID: ${id}`)
-      events.removeEventListener(`emote:${id}`)
-      events.removeEventListener(`heartbeat:${id}`)
-      events.removeEventListener(`votes:${id}`)
-      clearInterval(hb)
-    }
+    request.raw.on('close', () => cleanup(id, hb, push))
+    return () => cleanup(id, hb, push)
   })
+
   reply.sse(eventIterator)
 })
+
+/**
+ * Cleanup events to prevent memory leaks
+ *
+ * @param {String} id
+ * @param {TimerHandler} hb
+ */
+function cleanup (id, hb, push) {
+  server.log.info(`Cleaning up timers and events for Event ID: ${id}`)
+  events.removeListener(`emote:${id}`, push)
+  events.removeListener(`heartbeat:${id}`, push)
+  events.removeListener(`votes:${id}`, push)
+  clearInterval(hb)
+}
 
 /**
  * Get the current votes by Event ID
