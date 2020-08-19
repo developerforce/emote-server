@@ -9,10 +9,10 @@ const EVENT_ID_LENGTH = +process.env.EVENT_ID_LENGTH || 32
 const EVENTS_MAX = +process.env.EVENTS_MAX || 32
 
 const EMOTE_ALLOWLIST = [
-  'tada',
-  'love',
-  'laugh',
-  'plus_one',
+  'celebrate',
+  'heart',
+  'smile',
+  'plusone',
   'question'
 ]
 
