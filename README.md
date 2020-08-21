@@ -43,6 +43,23 @@ npm run start:dev
 * `EVENT_ID_LENGTH` - Max length of an Event ID (Default: 32 characters)
 * `EVENTS_MAX` - Max numbers of Event Streams (Default: 32)
 
+### Styling Configuration
+
+Colors, fonts, and positioning can be configured in `widget.scss`
+
+#### Positioning 
+
+1. Set `widget-side` to `right` or `left` in `widget.scss`
+2. Add absolute positioning to your site's CSS to adjust were it appears.
+
+```
+emote-widget {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+```
+
 ## API
 
 ### `GET /api/emote/:id`
