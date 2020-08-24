@@ -3,25 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Testing SSE</title>
+  <title>CascadiaJS Heroku Test</title>
+  <script type="text/javascript" src="emote.js"></script>
 </head>
 <body>
-  <h1>Hello, getting your feedback here!</h1>
-  <ul></ul>
+  <div style="margin-left: 200px; width: 600px;">
+    <emote-widget talk-id="heroku-test" position="bottom-right"></emote-widget>
+  </div>
 </body>
-<script>
-  const eventSource = new EventSource('/events/emote/mytalk')
-  const eventList = document.querySelector('ul')
-
-  eventSource.addEventListener('emote', function (event) {
-    const newElement = document.createElement('li')
-    console.log(event)
-    newElement.textContent = 'message: ' + JSON.stringify(event.data)
-    eventList.appendChild(newElement)
-  })
-
-  eventSource.addEventListener('votes', function (votes) {
-    console.log(votes)
-  })
-</script>
 </html>
