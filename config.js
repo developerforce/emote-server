@@ -12,6 +12,7 @@ const EMOTE_ALLOWLIST = [
   'celebrate',
   'heart',
   'smile',
+  'clap',
   'plusone',
   'question'
 ]
