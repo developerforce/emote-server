@@ -14,6 +14,13 @@
   </style>
 </head>
 <body>
-  <emote-widget talk-id="heroku-test" position="bottom-right"></emote-widget>
+  <emote-widget talk-id="heroku-test" position="bottom-left"></emote-widget>
+  <script>
+    const widget = document.querySelector('emote-widget');
+    widget.onEmote((event) => {
+      console.log('Received from the hook');
+      console.log(event);
+    });
+  </script>
 </body>
 </html>
