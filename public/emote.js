@@ -6840,7 +6840,7 @@ freeze(BaseLightningElement);
 seal(BaseLightningElement.prototype);
 
 function stylesheet(hostSelector, shadowSelector, nativeShadow) {
-  return [".container", shadowSelector, " {display: flex;flex-direction: column;justify-items: center;font-family: \"Nunito\", sans-serif;color: #4a4a4a;padding: 0 0 2em 2em;}\n.speech-bubble", shadowSelector, " {background-image: linear-gradient(140deg, #fcfcfc 0%, #f8f8f8 91%, #f8f8f8 91%);box-shadow: 0 0 50px 0 rgba(10, 6, 27, 0.22);flex: 1;padding: 1em;border-radius: 15px;border-top: 10px solid #17c37b;position: relative;display: flex;flex-direction: column;margin-right: 2em;}\n@media only screen and (min-width: 700px) {.speech-bubble", shadowSelector, " {margin: 0;}\n}.speech-bubble", shadowSelector, ":after {display: block;content: '';position: absolute;bottom: -10px;left: 30px;width: 0px;height: 0px;border-left: 10px solid transparent;border-right: 10px solid transparent;border-top: 10px solid #f8f8f8;}\nh1", shadowSelector, " {font-size: 18px;text-align: center;margin: 0;}\n.buttons", shadowSelector, " {display: flex;align-content: center;justify-content: center;width: 100%;text-align: center;padding: 1em 0;flex-wrap: wrap;}\na.text-link", shadowSelector, " {color: #4a4a4a;text-decoration: none;font-size: 13px;}\na.text-link:hover", shadowSelector, " {text-decoration: underline;}\n.bottom-section", shadowSelector, " {display: flex;justify-content: space-between;align-items: center;}\n.bottom-section", shadowSelector, " aside", shadowSelector, " a", shadowSelector, " {font-size: 13px;opacity: .5;transition: all .4s;}\n.bottom-section", shadowSelector, " aside", shadowSelector, " a:hover", shadowSelector, ", .bottom-section", shadowSelector, " aside", shadowSelector, " a:focus", shadowSelector, " {opacity: 1;}\n.activator", shadowSelector, " {width: 80px;height: 80px;border-radius: 50%;background-color: #17c37b;margin-top: 20px;display: flex;align-items: center;justify-content: center;cursor: pointer;position: relative;}\n.activator", shadowSelector, ":after {width: 50px;height: 50px;content: '';display: block;background-size: 100%;}\n.activator", shadowSelector, ":after {background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDdweCIgaGVpZ2h0PSI0N3B4IiB2aWV3Qm94PSIwIDAgNDcgNDciIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+c21pbGUtbGc8L3RpdGxlPgogICAgPGcgaWQ9InNtaWxlLWxnIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBmaWxsPSIjRkZEMTA1IiBjeD0iMjMuNSIgY3k9IjIzLjUiIHI9IjIyLjUiPjwvY2lyY2xlPgogICAgICAgIDxnIGlkPSJHcm91cC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMC4wMDAwMDAsIDE3LjAwMDAwMCkiIHN0cm9rZT0iIzAxMzNGRCI+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjQiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTE4LjA4OTQ1MzEsMy4wNTg3ODkwNiBDMTkuNTc3MzQ1NywxLjM4NzAzNDI4IDIxLjIyNzU0MSwwLjU1MjcxODUyNyAyMy4wNDAwMzkxLDAuNTU1ODQxODA0IEMyNC44NDY3NjExLDAuNTU4OTc4NTE4IDI2LjQ3NTAxNjMsMS4zOTY0ODQzOCAyNy45MjQ4MDQ3LDMuMDY4MzU5MzgiIGlkPSJyaWdodC1leWUiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLDMuMDU4Nzg5MDYgQzEuNDg3ODkyNTksMS4zODcwMzQyOCAzLjEzODA4NzksMC41NTI3MTg1MjcgNC45NTA1ODU5NCwwLjU1NTg0MTgwNCBDNi43NTczMDc5NCwwLjU1ODk3ODUxOCA4LjM4NTU2MzE1LDEuMzk2NDg0MzggOS44MzUzNTE1NiwzLjA2ODM1OTM4IiBpZD0ibGVmdC1leWUiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMuOTQ2MzEzNiwxOSBDOS4wNTU3MDU2LDE5IDUuNDA2OTM0NCwxNi42NjY2NjY3IDMsMTIgTDMsMTIgTDI0LDEyIEwyNCwxMiBDMjIuMTg4MTUwNCwxNi42NjY2NjY3IDE4LjgzNjkyMTYsMTkgMTMuOTQ2MzEzNiwxOSBaIiBpZD0iUGF0aC0yIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiMwMTMzRkQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\");}\nform", shadowSelector, " {padding: 1em;}\nlabel", shadowSelector, " {display: block;}\nselect", shadowSelector, " {width: 100%;}\n.form-buttons", shadowSelector, " {text-align: center;padding-top: 1em;}\n.form-buttons", shadowSelector, " a", shadowSelector, " {margin: 0 2em;}\n.animation-canvas", shadowSelector, " {position: absolute;background: transparent;height: calc(100vh - 30%);width: calc(100%  + 4em);bottom: 30%;right: -2em;z-index: 1;pointer-events: none;}\n"].join('');
+  return [".container", shadowSelector, " {display: flex;flex-direction: column;justify-items: center;font-family: \"Nunito\", sans-serif;color: #4a4a4a;padding: 0 0 2em 2em;}\n.speech-bubble", shadowSelector, " {background-image: linear-gradient(140deg, #fcfcfc 0%, #f8f8f8 91%, #f8f8f8 91%);box-shadow: 0 0 50px 0 rgba(10, 6, 27, 0.22);flex: 1;padding: 1em;border-radius: 15px;border-top: 10px solid #17c37b;position: relative;display: flex;flex-direction: column;margin-right: 2em;}\n@media only screen and (min-width: 700px) {.speech-bubble", shadowSelector, " {margin: 0;}\n}.speech-bubble", shadowSelector, ":after {display: block;content: '';position: absolute;bottom: -10px;left: 30px;width: 0px;height: 0px;border-left: 10px solid transparent;border-right: 10px solid transparent;border-top: 10px solid #f8f8f8;}\nh1", shadowSelector, " {font-size: 18px;text-align: center;margin: 0;}\n.buttons", shadowSelector, " {display: flex;align-content: center;justify-content: center;width: 100%;text-align: center;padding: 1em 0;flex-wrap: wrap;}\na.text-link", shadowSelector, " {color: #4a4a4a;text-decoration: none;font-size: 13px;}\na.text-link:hover", shadowSelector, " {text-decoration: underline;}\n.bottom-section", shadowSelector, " {display: flex;justify-content: space-between;align-items: center;}\n.bottom-section", shadowSelector, " aside", shadowSelector, " {font-size: 13px;opacity: .5;transition: all .4s;}\n.bottom-section", shadowSelector, " aside:hover", shadowSelector, ", .bottom-section", shadowSelector, " aside:focus", shadowSelector, " {opacity: 1;}\n.activator", shadowSelector, " {width: 80px;height: 80px;border-radius: 50%;background-color: #17c37b;margin-top: 20px;display: flex;align-items: center;justify-content: center;cursor: pointer;position: relative;}\n.activator", shadowSelector, ":after {width: 50px;height: 50px;content: '';display: block;background-size: 100%;}\n.activator", shadowSelector, ":after {background-image: url(\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNDdweCIgaGVpZ2h0PSI0N3B4IiB2aWV3Qm94PSIwIDAgNDcgNDciIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8dGl0bGU+c21pbGUtbGc8L3RpdGxlPgogICAgPGcgaWQ9InNtaWxlLWxnIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8Y2lyY2xlIGlkPSJPdmFsIiBmaWxsPSIjRkZEMTA1IiBjeD0iMjMuNSIgY3k9IjIzLjUiIHI9IjIyLjUiPjwvY2lyY2xlPgogICAgICAgIDxnIGlkPSJHcm91cC0yIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMC4wMDAwMDAsIDE3LjAwMDAwMCkiIHN0cm9rZT0iIzAxMzNGRCI+CiAgICAgICAgICAgIDxnIGlkPSJHcm91cCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2Utd2lkdGg9IjQiPgogICAgICAgICAgICAgICAgPHBhdGggZD0iTTE4LjA4OTQ1MzEsMy4wNTg3ODkwNiBDMTkuNTc3MzQ1NywxLjM4NzAzNDI4IDIxLjIyNzU0MSwwLjU1MjcxODUyNyAyMy4wNDAwMzkxLDAuNTU1ODQxODA0IEMyNC44NDY3NjExLDAuNTU4OTc4NTE4IDI2LjQ3NTAxNjMsMS4zOTY0ODQzOCAyNy45MjQ4MDQ3LDMuMDY4MzU5MzgiIGlkPSJyaWdodC1leWUiPjwvcGF0aD4KICAgICAgICAgICAgICAgIDxwYXRoIGQ9Ik0wLDMuMDU4Nzg5MDYgQzEuNDg3ODkyNTksMS4zODcwMzQyOCAzLjEzODA4NzksMC41NTI3MTg1MjcgNC45NTA1ODU5NCwwLjU1NTg0MTgwNCBDNi43NTczMDc5NCwwLjU1ODk3ODUxOCA4LjM4NTU2MzE1LDEuMzk2NDg0MzggOS44MzUzNTE1NiwzLjA2ODM1OTM4IiBpZD0ibGVmdC1leWUiPjwvcGF0aD4KICAgICAgICAgICAgPC9nPgogICAgICAgICAgICA8cGF0aCBkPSJNMTMuOTQ2MzEzNiwxOSBDOS4wNTU3MDU2LDE5IDUuNDA2OTM0NCwxNi42NjY2NjY3IDMsMTIgTDMsMTIgTDI0LDEyIEwyNCwxMiBDMjIuMTg4MTUwNCwxNi42NjY2NjY3IDE4LjgzNjkyMTYsMTkgMTMuOTQ2MzEzNiwxOSBaIiBpZD0iUGF0aC0yIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9IiMwMTMzRkQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjwvcGF0aD4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==\");}\nform", shadowSelector, " {padding: 1em;}\nlabel", shadowSelector, " {display: block;}\nselect", shadowSelector, " {width: 100%;}\n.form-buttons", shadowSelector, " {text-align: center;padding-top: 1em;}\n.form-buttons", shadowSelector, " a", shadowSelector, " {margin: 0 2em;}\n.animation-canvas", shadowSelector, " {position: absolute;background: transparent;height: calc(100vh - 30%);width: calc(100%  + 4em);bottom: 30%;right: -2em;z-index: 1;pointer-events: none;}\n"].join('');
 }
 var _implicitStylesheets = [stylesheet];
 
@@ -6970,12 +6970,12 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     classMap: {
       "container": true
     },
-    key: 21
+    key: 20
   }, [$cmp.showBubble ? api_element("div", {
     classMap: {
       "speech-bubble": true
     },
-    key: 18
+    key: 17
   }, [$cmp.showWidget ? api_element("h1", {
     key: 0
   }, [api_text("Share how you feel!")]) : null, $cmp.showWidget ? api_element("div", {
@@ -6997,7 +6997,7 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     classMap: {
       "bottom-section": true
     },
-    key: 6
+    key: 5
   }, [api_element("a", {
     classMap: {
       "text-link": true
@@ -7010,31 +7010,21 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
       "click": _m0 || ($ctx._m0 = api_bind($cmp.openOptions))
     }
   }, [api_text("options")]), api_element("aside", {
-    key: 5
-  }, [api_element("a", {
-    classMap: {
-      "text-link": true
-    },
-    attrs: {
-      "href": "https://heroku.com",
-      "target": "_blank",
-      "aria-label": "Brought to you with \uD83D\uDC9C by Heroku (Opens in new window)"
-    },
     key: 4
-  }, [api_text("Brought to you with \uD83D\uDC9C by Heroku")])])]) : null, $cmp.showOptions ? api_element("h1", {
-    key: 7
+  }, [api_text("Brought to you with \u2661 by Heroku")])]) : null, $cmp.showOptions ? api_element("h1", {
+    key: 6
   }, [api_text("Options")]) : null, $cmp.showOptions ? api_element("form", {
-    key: 17
+    key: 16
   }, [api_element("label", {
     attrs: {
       "for": `${api_scoped_id("animations")}`
     },
-    key: 8
+    key: 7
   }, [api_text("Animations")]), api_element("select", {
     attrs: {
       "id": api_scoped_id("animations")
     },
-    key: 13,
+    key: 12,
     on: {
       "change": _m1 || ($ctx._m1 = api_bind($cmp.selectOption))
     }
@@ -7045,17 +7035,17 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     props: {
       "selected": true
     },
-    key: 9
+    key: 8
   }, [api_text("On")]) : null, $cmp.showAnimations ? api_element("option", {
     attrs: {
       "value": "false"
     },
-    key: 10
+    key: 9
   }, [api_text("Off")]) : null, !$cmp.showAnimations ? api_element("option", {
     attrs: {
       "value": "true"
     },
-    key: 11
+    key: 10
   }, [api_text("On")]) : null, !$cmp.showAnimations ? api_element("option", {
     attrs: {
       "value": "false"
@@ -7063,12 +7053,12 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     props: {
       "selected": true
     },
-    key: 12
+    key: 11
   }, [api_text("Off")]) : null]), api_element("div", {
     classMap: {
       "form-buttons": true
     },
-    key: 16
+    key: 15
   }, [api_element("a", {
     classMap: {
       "text-link": true
@@ -7076,7 +7066,7 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     attrs: {
       "href": api_scoped_frag_id("#")
     },
-    key: 14,
+    key: 13,
     on: {
       "click": _m2 || ($ctx._m2 = api_bind($cmp.closeOptions))
     }
@@ -7087,7 +7077,7 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     attrs: {
       "href": api_scoped_frag_id("#")
     },
-    key: 15,
+    key: 14,
     on: {
       "click": _m3 || ($ctx._m3 = api_bind($cmp.saveOptions))
     }
@@ -7095,7 +7085,7 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
     classMap: {
       "activator": true
     },
-    key: 20,
+    key: 19,
     on: {
       "click": _m4 || ($ctx._m4 = api_bind($cmp.toggleWidget))
     }
@@ -7108,7 +7098,7 @@ function tmpl$1($api, $cmp, $slotset, $ctx) {
         dom: "manual"
       }
     },
-    key: 19
+    key: 18
   }, [])])])];
 }
 
