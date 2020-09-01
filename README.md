@@ -8,7 +8,7 @@ Backend for the [Emote Widget](https://github.com/fostive/emote-widget)
 
 ## Installation & Deployment
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fostive/emote-widget/tree/main)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/fostive/emote-server/tree/main)
 
 ### Manual Deployment
 
