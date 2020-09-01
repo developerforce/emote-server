@@ -1,0 +1,34 @@
+{
+  "name": "emote-server",
+  "description": "Backend for the Emote Widget",
+  "website": "https://github.com/fostive/emote-server",
+  "repository": "https://github.com/fostive/emote-server",
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "addons": ["heroku-redis:hobby-dev"],
+  "env": {
+    "RATE_LIMIT_MAX": {
+      "description": "Max number of requests per time window",
+      "value": 100
+    },
+    "RATE_LIMIT_WINDOW": {
+      "description": "Duration of the Rate Limit time window",
+      "value": "1 minute"
+    },
+    "HEARTBEAT_TIMEOUT": {
+      "description": "Duration of the Heartbeat",
+      "value": 30
+    },
+    "EVENT_ID_LENGTH": {
+      "description": "Max length of an Event ID",
+      "value": 32
+    },
+    "EVENTS_MAX": {
+      "description": "Max number of Event Streams",
+      "value": 32
+    }
+  }
+}
