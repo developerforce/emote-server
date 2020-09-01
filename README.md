@@ -1,6 +1,6 @@
 # emote-server
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation & Deployment
@@ -151,6 +151,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://clif.world"><img src="https://avatars2.githubusercontent.com/u/13678764?v=4" width="100px;" alt=""/><br /><sub><b>Clifton Campbell</b></sub></a><br /><a href="https://github.com/fostive/emote-server/commits?author=clif-os" title="Code">💻</a></td>
+    <td align="center"><a href="https://julianduque.co"><img src="https://avatars3.githubusercontent.com/u/733877?v=4" width="100px;" alt=""/><br /><sub><b>Julián Duque</b></sub></a><br /><a href="https://github.com/fostive/emote-server/commits?author=julianduque" title="Code">💻</a> <a href="#ideas-julianduque" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
