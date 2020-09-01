@@ -137,3 +137,7 @@ Connect to an event stream by Event ID
 * `emote` - An `emote` has been received - (data: `smile`)
 * `votes` - A `votes` state object has been received (data: `{"smile": 1, "question": 3}`)
 * `heartbeat` - A `ping` has been received (data: `ping`)
+
+## 📝 License
+
+This project is licensed under the Creative Commons Zero v1.0 License. See the [LICENSE](LICENSE) file for details.
