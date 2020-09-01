@@ -1,9 +1,16 @@
 # emote-server
+
+Backend for the [Emote Widget](https://github.com/fostive/emote-widget)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation & Deployment
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+### Manual Deployment
 
 1. Create an Heroku application:
 
@@ -40,28 +47,11 @@ npm run start:dev
 ## Configuration
 
 * `REDIS_URL` - A Redis connection string
-* `RATE_LIMIT_MAX` - Max number of requests per Window (Default: 100)
-* `RATE_LIMIT_WINDOW` - Duration of the Rate Limit Window (Default: 1 minute)
+* `RATE_LIMIT_MAX` - Max number of requests per time window (Default: 100)
+* `RATE_LIMIT_WINDOW` - Duration of the Rate Limit time window (Default: 1 minute)
 * `HEARTBEAT_TIMEOUT` - Duration of the Heartbeat (Default: 30 seconds)
 * `EVENT_ID_LENGTH` - Max length of an Event ID (Default: 32 characters)
-* `EVENTS_MAX` - Max numbers of Event Streams (Default: 32)
-
-### Styling Configuration
-
-Colors, fonts, and positioning can be configured in `widget.scss`
-
-#### Positioning 
-
-1. Set `widget-side` to `right` or `left` in `widget.scss`
-2. Add absolute positioning to your site's CSS to adjust were it appears.
-
-```
-emote-widget {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-}
-```
+* `EVENTS_MAX` - Max number of Event Streams (Default: 32)
 
 ## API
 
